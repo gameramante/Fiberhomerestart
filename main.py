@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 
 
 url = 'http://192.168.1.1/goform/webLogin'
