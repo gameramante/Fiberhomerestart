@@ -5,8 +5,8 @@ url = 'http://192.168.1.1/goform/webLogin'
 
 
 login_data = {
-    "User": "xxxx",
-    "Passwd": "xxxx"
+    "User": "",
+    "Passwd": ""
 }
 ses = requests.Session()
 
