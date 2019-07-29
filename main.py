@@ -7,8 +7,8 @@ url = 'http://192.168.1.1/goform/webLogin'
 def reboot():
     
     login_data = {
-        "User": "xxxx",
-        "Passwd": "xxxx"
+        "User": "xxx",
+        "Passwd": "xxx"
     }
 
     ses = requests.Session()
