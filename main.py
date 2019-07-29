@@ -1,14 +1,24 @@
 import requests
 
-
 url = 'http://192.168.1.1/goform/webLogin'
 
+def reboot():
+    
+    login_data = {
+        "User": "xxxxx",
+        "Passwd": "xxxxx"
+    }
 
-login_data = {
-    "User": "",
-    "Passwd": ""
-}
-ses = requests.Session()
+    ses = requests.Session()
 
-login = ses.post(url, data = login_data)
-reboot = ses.get('http://192.168.1.1/goform/reboot')
+    try:
+        ses.post(url, data = login_data)
+    except requests.exceptions.ConnectionError:
+        print('The router is still restarting')
+    
+    try:
+        ses.get('http://192.168.1.1/goform/reboot')
+    except requests.exceptions.ConnectionError:
+        print('The router is now restarting.')
+
+reboot()
