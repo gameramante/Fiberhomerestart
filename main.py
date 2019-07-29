@@ -1,4 +1,5 @@
 import requests
+import time
 
 url = 'http://192.168.1.1/goform/webLogin'
 
@@ -15,10 +16,12 @@ def reboot():
         ses.post(url, data = login_data)
     except requests.exceptions.ConnectionError:
         print('The router is still restarting')
+        time.sleep(5)
     
     try:
         ses.get('http://192.168.1.1/goform/reboot')
     except requests.exceptions.ConnectionError:
         print('The router is now restarting.')
+        time.sleep(5)
 
 reboot()
