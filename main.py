@@ -5,23 +5,26 @@ import os
 from bs4 import BeautifulSoup
 
 login_data = {
-            "User": "xxx",
-            "Passwd": "xxx"
+            "User": "xxxx",
+            "Passwd": "xxxx"
         }
+
+of = open('ip/iprange.txt', encoding = 'utf-8').read()
 
 url = 'http://192.168.1.1/goform/webLogin'
 
-def main():
-    ses = requests.Session()
+ses = requests.Session()
 
+def main():
     try:
         print('Trying to connect to ONU...')
         time.sleep(2)
         ses.post(url, data = login_data) #login into the router
     except requests.exceptions.ConnectionError:
+        os.system('cls')
         print('\n\nONU is still restarting.\n')
-        print('Trying again in 10 seconds.')
-        time.sleep(10)
+        print('Trying again in 20 seconds.')
+        time.sleep(20)
         os.system('cls')
         main()
     else:
@@ -30,14 +33,13 @@ def main():
         soup = BeautifulSoup(checkip, 'html.parser')
         ip = soup.find(id = 'wan_ip').text
         print('Your current ip is {}'.format(ip))
-
-        of = open('ip/iprange.txt', encoding = 'utf-8').read()
         
         if ip == '0.0.0.0':
-            print('\n\nInvalid IP, restarting script in 10 seconds')
-            time.sleep(10)
+            print('\nInvalid IP, checking ip again in 20 seconds..')
+            time.sleep(20)
             os.system('cls')
             main()
+
         elif ip in of:
             print('The ip was found in the database, quitting the program.')
             time.sleep(5)
@@ -50,15 +52,13 @@ def main():
             reboot()
 
 def reboot():
-    ses = requests.Session()
-
     try:
         print('Connecting to ONU...')
         ses.post(url, data = login_data)
     except requests.exceptions.ConnectionError:
         os.system('cls')
-        print('The router is still restarting.\n')
-        time.sleep(3)
+        print('The router is still restarting, trying again in 5 seconds\n')
+        time.sleep(5)
         main()
     
     try:
