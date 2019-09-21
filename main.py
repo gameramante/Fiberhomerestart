@@ -65,7 +65,7 @@ def reboot():
         ses.get('http://192.168.1.1/goform/reboot')
     except requests.exceptions.ConnectionError:
         print('\nONU is not restarting.')
-        time.sleep(3)
+        time.sleep(2)
         os.system('cls')
         main()
 
