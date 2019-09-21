@@ -5,8 +5,8 @@ import os
 from bs4 import BeautifulSoup
 
 login_data = {
-            "User": "xxxx",
-            "Passwd": "xxxx"
+            "User": "***",
+            "Passwd": "***"
         }
 
 of = open('ip/iprange.txt', encoding = 'utf-8').read()
@@ -18,13 +18,13 @@ ses = requests.Session()
 def main():
     try:
         print('Trying to connect to ONU...')
-        time.sleep(2)
+        time.sleep(1)
         ses.post(url, data = login_data) #login into the router
     except requests.exceptions.ConnectionError:
         os.system('cls')
         print('\n\nONU is still restarting.\n')
-        print('Trying again in 20 seconds.')
-        time.sleep(20)
+        print('Trying again in 15 seconds.')
+        time.sleep(15)
         os.system('cls')
         main()
     else:
@@ -35,8 +35,8 @@ def main():
         print('Your current ip is {}'.format(ip))
         
         if ip == '0.0.0.0':
-            print('\nInvalid IP, checking ip again in 20 seconds..')
-            time.sleep(20)
+            print('\nInvalid IP, checking ip again in 15 seconds..')
+            time.sleep(15)
             os.system('cls')
             main()
 
@@ -46,15 +46,15 @@ def main():
             sys.exit(0)
         else:
             print('ip not found in database\n\n')
-            print('Restarting in 3 seconds.')
-            time.sleep(3)
+            print('Restarting in 5 seconds.')
+            time.sleep(5)
             os.system('cls')
             reboot()
 
 def reboot():
     try:
         print('Connecting to ONU...')
-        ses.post(url, data = login_data)
+        ses.post(url, data = login_data) #login into the router
     except requests.exceptions.ConnectionError:
         os.system('cls')
         print('The router is still restarting, trying again in 5 seconds\n')
@@ -64,8 +64,8 @@ def reboot():
     try:
         ses.get('http://192.168.1.1/goform/reboot')
     except requests.exceptions.ConnectionError:
-        print('\nRestarting ONU.')
-        time.sleep(5)
+        print('\nONU is not restarting.')
+        time.sleep(3)
         os.system('cls')
         main()
 
