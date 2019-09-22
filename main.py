@@ -47,7 +47,7 @@ def main():
         else:
             print('ip not found in database\n\n')
             print('Restarting in 5 seconds.')
-            time.sleep(5)
+            time.sleep(4)
             os.system('cls')
             reboot()
 
@@ -58,7 +58,7 @@ def reboot():
     except requests.exceptions.ConnectionError:
         os.system('cls')
         print('The router is still restarting, trying again in 5 seconds\n')
-        time.sleep(5)
+        time.sleep(4)
         main()
     
     try:
