@@ -5,11 +5,12 @@ import os
 from bs4 import BeautifulSoup
 
 login_data = {
-            "User": "***",
-            "Passwd": "***"
+            "User": "admin1234",
+            "Passwd": "admin1234"
         }
 
-of = open('ip/iprange.txt', encoding = 'utf-8').read() #open the ip.txt file
+def ips():
+    return open('ip/iprange.txt', encoding = 'utf-8').read() #opens the ip.txt file
 
 url = 'http://192.168.1.1/goform/webLogin'
 
@@ -37,6 +38,7 @@ def main(tries):
         if ip == '0.0.0.0':
             print('\nInvalid IP, checking ip again in 3 seconds..')
             tries += 1
+            time.sleep(3)
             print('\n\nCurrent try: {} remaining tries: {}'.format(tries, 15 - tries))
             if tries >= 15:
                 print('Tries excedeed the limit, forcing restart\n Tries: {}\n'.format(tries))
@@ -47,7 +49,7 @@ def main(tries):
                 os.system('cls')
                 main(tries)
 
-        elif ip in of:
+        elif ip in ips():
             print('The ip was found in the database, quitting the program.')
             time.sleep(5)
             sys.exit(0)
