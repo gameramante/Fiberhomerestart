@@ -5,8 +5,8 @@ import os
 from bs4 import BeautifulSoup
 
 login_data = {
-            "User": "admin1234",
-            "Passwd": "admin1234"
+            "User": "xxx",
+            "Passwd": "xxx"
         }
 
 def ips():
