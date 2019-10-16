@@ -103,4 +103,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 testing.py
-ip/iprange.txt
+./ip/iprange.txt
