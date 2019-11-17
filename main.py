@@ -3,11 +3,10 @@ import sys
 import time
 import os
 from bs4 import BeautifulSoup
-import asyncio
 
 login_data = {
-            "User": "xxxx",
-            "Passwd": "xxxx"
+            "User": "xxx",
+            "Passwd": "xxx"
         }
 
 def ips():
@@ -23,14 +22,14 @@ def main(tries):
         time.sleep(0.5)
         ses.post(url, data = login_data) #login into the router
     except requests.exceptions.ConnectionError:
-        os.system('cls')
+        clearTerminal()
         print('\nONU is still restarting.\n')
         print('Trying again in 10 seconds.')
         time.sleep(10)
-        os.system('cls')
+        clearTerminal()
         main(tries = 0)
     else:
-        os.system('cls')
+        clearTerminal()
         checkip = ses.get('http://192.168.1.1/state/wan_state.asp').content
         soup = BeautifulSoup(checkip, 'html.parser')
         ip = soup.find(id = 'wan_ip').text
@@ -47,7 +46,7 @@ def main(tries):
                 reboot()
             else:
                 time.sleep(3)
-                os.system('cls')
+                clearTerminal()
                 main(tries)
 
         elif ip in ips():
@@ -58,7 +57,7 @@ def main(tries):
             print('ip not found in database\n\n')
             print('Restarting in 5 seconds.')
             time.sleep(4)
-            os.system('cls')
+            clearTerminal()
             reboot()
 
 def reboot():
@@ -66,17 +65,25 @@ def reboot():
         print('Connecting to ONU...')
         ses.post(url, data = login_data) #login into the router
     except requests.exceptions.ConnectionError:
-        os.system('cls')
-        print('The router is still restarting, trying again in 5 seconds\n')
+        clearTerminal()
+        print('The router is still restarting, trying again in 5 seconds')
         time.sleep(4)
         main(tries = 0)
     
     try:
         ses.get('http://192.168.1.1/goform/reboot')
     except requests.exceptions.ConnectionError:
-        print('\nONU is now restarting.')
+        print('ONU is now restarting.')
         time.sleep(2)
-        os.system('cls')
+        clearTerminal()
         main(tries = 0)
+
+def clearTerminal():
+    if sys.platform.startswith('win32'):
+        return os.system('cls')
+    elif sys.platform.startswith('linux'):
+        return os.system('clear')
+    else:
+        return os.system('clear')
 
 main(tries = 0)
