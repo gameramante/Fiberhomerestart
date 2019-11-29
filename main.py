@@ -19,14 +19,14 @@ ses = requests.Session()
 def main(tries):
     try:
         print('Connecting to ONU..')
-        time.sleep(0.5)
-        ses.post(url, data = login_data) #login into the router
+        ses.post(url, data = login_data, timeout=10) #login into the router
     except requests.exceptions.ConnectionError:
         clearTerminal()
-        print('\nONU is still restarting.\n')
-        print('Trying again in 10 seconds.')
-        time.sleep(10)
+        print('ONU is still restarting.\n')
+        print('Trying again in 3 seconds.')
+        time.sleep(3)
         clearTerminal()
+        ses.close()
         main(tries = 0)
     else:
         clearTerminal()
@@ -43,20 +43,23 @@ def main(tries):
             if tries >= 15:
                 print('Tries excedeed the limit, forcing restart\n Tries: {}\n'.format(tries))
                 tries = 0 #reset tries
+                ses.close()
                 reboot()
             else:
                 time.sleep(3)
+                ses.close()
                 clearTerminal()
                 main(tries)
-
         elif ip in ips():
             print('The ip was found in the database, quitting the program.')
+            ses.close()
             time.sleep(5)
             sys.exit(0)
         else:
             print('ip not found in database\n\n')
             print('Restarting in 5 seconds.')
             time.sleep(4)
+            ses.close()
             clearTerminal()
             reboot()
 
@@ -68,14 +71,17 @@ def reboot():
         clearTerminal()
         print('The router is still restarting, trying again in 5 seconds')
         time.sleep(4)
+        ses.close()
         main(tries = 0)
-    
+
     try:
         ses.get('http://192.168.1.1/goform/reboot')
+        ses.close()
     except requests.exceptions.ConnectionError:
         print('ONU is now restarting.')
         time.sleep(2)
         clearTerminal()
+        ses.close()
         main(tries = 0)
 
 def clearTerminal():
